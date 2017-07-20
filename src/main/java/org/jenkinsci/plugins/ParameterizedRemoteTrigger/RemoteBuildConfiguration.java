@@ -968,7 +968,7 @@ public class RemoteBuildConfiguration extends Builder {
             // wait up to 5 seconds for the connection to be open
             connection.setConnectTimeout(5000);
             connection.connect();
-            
+
             InputStream is;
             try {
                 is = connection.getInputStream();
@@ -976,17 +976,19 @@ public class RemoteBuildConfiguration extends Builder {
                 // In case of a e.g. 404 status
                 is = connection.getErrorStream();
             }
-            
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            String line;
-            // String response = "";
+
             StringBuilder response = new StringBuilder();
-        
-            while ((line = rd.readLine()) != null) {
-                response.append(line);
+            if(is != null) {
+                BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+                String line;
+                // String response = "";
+
+                while ((line = rd.readLine()) != null) {
+                    response.append(line);
+                }
+                rd.close();
             }
-            rd.close();
-            
+
             // JSONSerializer serializer = new JSONSerializer();
             // need to parse the data we get back into struct
             //listener.getLogger().println("Called URL: '" + urlString +  "', got response: '" + response.toString() + "'");
